@@ -1,3 +1,7 @@
+node.js是一个基于v8引擎的js运行时环境(chrome也嵌入了v8引擎)
+
+
+
 ### 常见的全局对象
 
 1. console对象
@@ -22,11 +26,11 @@
 
 1. 使用**iife**(immediately invoke function expression 立即执行函数)解决模块化问题 `(functiont bar() {})()`
 
-#### 2. AMD模块化
+#### 2. AMD模块化, CMD模块化
 
 #### 3. CommonJs模块化: 
 
-##### 1.1 node是CommonJs在服务器端的一个实现 
+##### 3.1 node是CommonJs在服务器端的一个实现 
 
 - 每一个js文件都是一个单独的模块
 
@@ -66,10 +70,63 @@
     const bar = require('./bar')
     console.log(bar.name == 'Jack')  // true
     ```
+    
+    
+    
+  - [require()的查找规则](https://nodejs.org/docs/latest/api/modules.html#all-together)
+  
+  - 
+  
+    ```javascript
+    
+    ```
 
-##### 1.2 browserify是CommonJs在浏览器中的一种实现
+##### 3.2 browserify是CommonJs在浏览器中的一种实现
 
-#####  1.3 webpack打包工具具备对CommonJs的支持和转换
+#####  3.3 webpack打包工具具备对CommonJs的支持和转换
+
+#### 4. ES Module. (ES自己的模块化系统)
+
+ 1. import和export是关键字, 不是函数. **编译时解析/静态解析**
+
+    [import和export的语法细节](https://es6.ruanyifeng.com/#docs/module#%E6%A6%82%E8%BF%B0)
+
+ 2. 存在import()函数, 动态引入
+
+ 3. js引擎遇到import时会**异步加载**js文件, 不会阻塞主线程继续执行
+
+    ```html
+    // 其中foo中的代码将在bar中的代码前面执行
+    <script src='./bar.js' type='module'></script>
+    <script src='./foo.js'></script>
+    
+    ```
+
+ 4. wes
+
+
+
+#### 5. commonjs模块和es module对比
+
+1. 多次引入, 只加载运行一次
+2. 如果存在循环引入, 那么加载时是深度优先算法
+
+3. 模块的导入和导出
+
+   1. es6的模块:
+      - 在导入文件中: 相当于导入用const定义的变量: 不可以改变基本类型值, 可以改变引用类型值的某个属性
+      -  在被导入文件中: 改变基本类型值和引用类型值会影响其他文件导入的这个变量
+      - 为了避免难以纠错, 应该尽量避免在导入文件中改变被导入文件中的变量的属性
+
+   2. commonjs模块中:
+
+      -  在导入文件中: 导入是对module.exports对象的浅拷贝对象; 改变基本类型值不影响被导入文件中的变量, 改变引用类型值会影响被导入文件中的变量
+
+      - 在被导入文件中: 改变基本类型值不会影响其他文件导入的这个变量; 改变引用类型值会影响其他文件导入的这个变量
+
+   3. CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
+   4. CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
+   5. CommonJS 模块的require()是同步加载模块，ES6 模块的import命令是异步加载，有一个独立的模块依赖的解析阶段。
 
 
 
